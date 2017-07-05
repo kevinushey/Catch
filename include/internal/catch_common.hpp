@@ -15,6 +15,15 @@
 
 namespace Catch {
 
+#ifndef CATCH_CONFIG_NORAND
+    int rand() {
+        return std::rand();
+    }
+    void srand(unsigned seed) {
+        std::srand(seed);
+    }
+#endif
+
     bool startsWith( std::string const& s, std::string const& prefix ) {
         return s.size() >= prefix.size() && std::equal(prefix.begin(), prefix.end(), s.begin());
     }
@@ -92,7 +101,7 @@ namespace Catch {
 
     void seedRng( IConfig const& config ) {
         if( config.rngSeed() != 0 )
-            std::srand( config.rngSeed() );
+            srand( config.rngSeed() );
     }
     unsigned int rngSeed() {
         return getCurrentContext().getConfig()->rngSeed();
